@@ -1,12 +1,21 @@
-function handleSubmit(e) {
-  e.preventDefault()
-  const form = e.target
-  const name = form.querySelector('input[type="text"]').value
-  const paket = form.querySelector('select').value
-  const pesan = form.querySelector('textarea').value
-  const text = `Halo RA Ray Studio! Saya ${name}. Saya tertarik dengan ${paket}.${pesan ? '\n\nPesan: ' + pesan : ''}`
-  window.open(`https://wa.me/6281646914942?text=${encodeURIComponent(text)}`, '_blank')
-}
+import { useState } from 'react'
+
+const CETAK_OPTIONS = [
+  { value: 'cetak-3r', label: 'Cetak 3R (Rp11.000)' },
+  { value: 'cetak-4r', label: 'Cetak 4R (Rp13.000)' },
+  { value: 'cetak-5r', label: 'Cetak 5R (Rp15.000)' },
+  { value: 'cetak-4x', label: 'Cetak 4x (Rp15.000)' },
+  { value: 'cetak-8rp', label: 'Cetak 8RP (Rp75.000)' },
+]
+
+const PAKET_OPTIONS = [
+  { value: 'self-foto', label: 'Self Foto (Rp20K / Rp60K)' },
+  { value: 'ruang-mini', label: 'Ruang Mini (Rp20K/orang)' },
+  { value: 'spotlight', label: 'Spotlight (Rp20K/orang)' },
+  { value: 'strip', label: 'Strip (Rp10K/orang)' },
+  { value: 'promo-pelajar', label: 'Promo Pelajar (Rp20K/orang)' },
+  { value: 'cetak', label: 'Cetak Gambar (Rp11K - Rp75K)' },
+]
 
 const CONTACT_DETAILS = [
   { icon: 'fab fa-instagram', label: 'Instagram', value: '@ra.raystudio' },
@@ -21,16 +30,29 @@ const SOCIAL_LINKS = [
   { href: 'https://tiktok.com/@ra.raystudio', icon: 'fab fa-tiktok', label: 'TikTok' },
 ]
 
-const PAKET_OPTIONS = [
-  { value: 'basic', label: 'Paket Basic' },
-  { value: 'couple', label: 'Paket Couple' },
-  { value: 'group', label: 'Paket Group' },
-  { value: 'event', label: 'Paket Event' },
-  { value: 'content', label: 'Content Creator' },
-  { value: 'premium', label: 'Paket Premium' },
-]
-
 export default function Contact() {
+  const [paket, setPaket] = useState('')
+  const [tipeCetak, setTipeCetak] = useState('')
+
+  function handleSubmit(e) {
+    e.preventDefault()
+    const f = e.target
+    const name = f.querySelector('input[placeholder="Nama"]').value
+    const email = f.querySelector('input[type="email"]').value
+    const hp = f.querySelector('input[type="tel"]').value
+    const pesan = f.querySelector('textarea').value
+    let text = `Halo RA Ray Studio!\n\n`
+    text += `Nama: ${name}\n`
+    text += `Email: ${email}\n`
+    text += `No. HP: ${hp}\n`
+    text += `Paket: ${PAKET_OPTIONS.find(o => o.value === paket)?.label || paket}\n`
+    if (paket === 'cetak' && tipeCetak) {
+      text += `Tipe Cetak: ${CETAK_OPTIONS.find(o => o.value === tipeCetak)?.label || tipeCetak}\n`
+    }
+    if (pesan) text += `\nPesan: ${pesan}`
+    window.open(`https://wa.me/6281646914942?text=${encodeURIComponent(text)}`, '_blank')
+  }
+
   return (
     <section className="section" id="contact">
       <div className="container">
@@ -76,20 +98,22 @@ export default function Contact() {
             </div>
           </div>
           <form className="contact-form reveal reveal-delay-2" onSubmit={handleSubmit}>
-            <input type="text" placeholder="Nama Lengkap" required />
+            <input type="text" placeholder="Nama" required />
             <input type="email" placeholder="Email" required />
-            <input type="tel" placeholder="No. WhatsApp" />
-            <select required defaultValue="">
-              <option value="" disabled>
-                Pilih Paket
-              </option>
+            <input type="tel" placeholder="No. HP" required />
+            <select required value={paket} onChange={e => { setPaket(e.target.value); setTipeCetak('') }}>
+              <option value="" disabled>Pilih Paket</option>
               {PAKET_OPTIONS.map((o, i) => (
-                <option key={i} value={o.value}>
-                  {o.label}
-                </option>
+                <option key={i} value={o.value}>{o.label}</option>
               ))}
             </select>
-            <textarea placeholder="Pesan atau pertanyaan..." rows={4}></textarea>
+            <select required value={tipeCetak} onChange={e => setTipeCetak(e.target.value)}>
+              <option value="" disabled>Pilih Tipe Cetak</option>
+              {CETAK_OPTIONS.map((o, i) => (
+                <option key={i} value={o.value}>{o.label}</option>
+              ))}
+            </select>
+            <textarea placeholder="Pesan..." rows={4}></textarea>
             <button type="submit" className="btn btn-primary">
               <i className="fab fa-whatsapp"></i> Kirim via WhatsApp
             </button>
