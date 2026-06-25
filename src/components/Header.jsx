@@ -24,18 +24,14 @@ export default function Header() {
   }, [open])
 
   return (
-    <header className={`header${scrolled ? ' scrolled' : ''}`}>
+    <header className={`header${scrolled ? ' scrolled' : ''}${open ? ' nav-open' : ''}`}>
       <div className="container">
         <a href="#" className="logo">
           RA <span>Ray</span> Studio
         </a>
-        <nav className={`nav${open ? ' open' : ''}`}>
+        <nav className="nav">
           {NAV_LINKS.map((link) => (
-            <a
-              key={link.href}
-              href={link.href}
-              onClick={() => setOpen(false)}
-            >
+            <a key={link.href} href={link.href}>
               {link.label}
             </a>
           ))}
@@ -49,6 +45,19 @@ export default function Header() {
           <span></span>
           <span></span>
         </button>
+      </div>
+      <div className={`mobile-overlay${open ? ' open' : ''}`} onClick={() => setOpen(false)}>
+        <nav className="mobile-nav">
+          {NAV_LINKS.map((link) => (
+            <a
+              key={link.href}
+              href={link.href}
+              onClick={() => setOpen(false)}
+            >
+              {link.label}
+            </a>
+          ))}
+        </nav>
       </div>
     </header>
   )
