@@ -26,7 +26,7 @@ export default function Header() {
   return (
     <header className={`header${scrolled ? ' scrolled' : ''}${open ? ' nav-open' : ''}`}>
       <div className="container">
-        <a href="#" className="logo">
+        <a href="#home" className="logo" onClick={() => setOpen(false)}>
           RA <span>Ray</span> Studio
         </a>
         <nav className="nav">

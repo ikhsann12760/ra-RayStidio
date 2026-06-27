@@ -1,5 +1,5 @@
 *, *::before, *::after { margin: 0; padding: 0; box-sizing: border-box; }
-html { scroll-behavior: smooth; }
+html { scroll-behavior: smooth; scroll-padding-top: 80px; }
 :root {
   --bg-primary: #0d0d1a;
   --bg-secondary: #1a1a2e;
@@ -62,17 +62,15 @@ img { max-width: 100%; height: auto; display: block; }
   z-index: 1000;
   padding: 16px 0;
   transition: var(--transition);
-  background: rgba(13, 13, 26, 0.95);
-  backdrop-filter: blur(20px);
-  box-shadow: 0 4px 20px rgba(0,0,0,0.3);
+  background: transparent;
 }
 @media (max-width: 480px) {
   .header { padding: 12px 0; }
 }
 .header.scrolled {
-  background: transparent;
-  backdrop-filter: none;
-  box-shadow: none;
+  background: rgba(13, 13, 26, 0.95);
+  backdrop-filter: blur(20px);
+  box-shadow: 0 4px 20px rgba(0,0,0,0.3);
   padding: 12px 0;
 }
 .header.nav-open {
@@ -136,6 +134,8 @@ img { max-width: 100%; height: auto; display: block; }
 .nav-toggle.active span:nth-child(1) { transform: rotate(45deg) translate(5px, 5px); }
 .nav-toggle.active span:nth-child(2) { opacity: 0; }
 .nav-toggle.active span:nth-child(3) { transform: rotate(-45deg) translate(5px, -5px); }
+
+.mobile-overlay { display: none; }
 
 .hero {
   min-height: 100vh;
